@@ -8,8 +8,8 @@ This is a serverless app that uploads a mp3 file to a AWS S3 bucket. From there,
 
 ## Setup
 
-- Install serverless cli.
-- Install AWS cli.
+- Install [serverless cli](https://serverless.com/framework/docs/getting-started/).
+- Install [AWS cli](https://docs.aws.amazon.com/polly/latest/dg/setup-aws-cli.html).
 
 ## Deploy
 
