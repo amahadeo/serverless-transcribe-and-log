@@ -1,49 +1,57 @@
 'use strict';
 
-class ServerlessPlugin {
+const fs = require('fs');
+const path = require('path');
+
+class Mp3Uploader {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
+    this.provider = serverless.getProvider('aws');
 
     this.commands = {
-      welcome: {
-        usage: 'Helps you start your first Serverless plugin',
-        lifecycleEvents: ['hello', 'world'],
+      upload_mp3: {
+        usage: 'Uploads mp3 file to S3 to be transcribed',
+        lifecycleEvents: ['uploadFile'],
         options: {
-          message: {
+          filename: {
             usage:
-              'Specify the message you want to deploy ' +
-              '(e.g. "--message \'My Message\'" or "-m \'My Message\'")',
+              'Specify the file from folder "mp3/" you want uploaded to s3',
             required: true,
-            shortcut: 'm',
+            shortcut: 'f',
           },
         },
       },
     };
 
     this.hooks = {
-      'before:welcome:hello': this.beforeWelcome.bind(this),
-      'welcome:hello': this.welcomeUser.bind(this),
-      'welcome:world': this.displayHelloMessage.bind(this),
-      'after:welcome:world': this.afterHelloWorld.bind(this),
+      'upload_mp3:uploadFile': this.uploadFile.bind(this),
+      'after:upload_mp3:uploadFile': this.afterUploadFile.bind(this),
     };
   }
 
-  beforeWelcome() {
-    this.serverless.cli.log('Hello from Serverless!');
+  uploadFile() {
+    const pathToFile = path.join('mp3', this.options['filename']);
+    return new Promise(function (resolve, reject) {
+      try {
+        stats = fs.statSync(pathToFile);
+        this.serverless.cli.log("File exists.");
+        return this.provider.request('S3', 'upload', {
+          Bucket: this.serverless.service.custom.mp3_uploader.bucket_name,
+          Key: this.options['filename'],
+          Body: fs.readFileSync(pathToFile)
+        })
+      }
+      catch (e) {
+        this.serverless.cli.log("File does not exist.");
+        reject(e)
+      }
+    })
   }
 
-  welcomeUser() {
-    this.serverless.cli.log('Your message:');
-  }
-
-  displayHelloMessage() {
-    this.serverless.cli.log(`${this.options.message}`);
-  }
-
-  afterHelloWorld() {
-    this.serverless.cli.log('Please come again!');
+  afterUploadFile() {
+    this.serverless.cli.log('Get ready for transcription!');
   }
 }
 
-module.exports = ServerlessPlugin;
+module.exports = Mp3Uploader;
