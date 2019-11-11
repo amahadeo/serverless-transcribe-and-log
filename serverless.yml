@@ -2,7 +2,8 @@ service: serverless-transcribe-and-log
 
 provider:
   name: aws
-  runtime: nodejs10.15
+  runtime: nodejs10.x
+  stage: dev
   environment:
     S3_AUDIO_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-audio-records
     S3_TRANSCRIPTION_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-transcriptions
@@ -27,6 +28,8 @@ functions:
       - s3:
           bucket: ${self:provider.environment.S3_AUDIO_BUCKET}
           event: s3:ObjectCreated:*
+          rules:
+            - suffix: .mp3
 
 resources:
   Resources:

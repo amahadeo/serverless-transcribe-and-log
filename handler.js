@@ -19,9 +19,8 @@ module.exports.transcribe = (event, context, callback) => {
     return transcribeService.startTranscriptionJob({
       LanguageCode: process.env.LANGUAGE_CODE,
       Media: { MediaFileUri: recordUrl },
-      MediaFormat: 'wav',
+      MediaFormat: 'mp3',
       TranscriptionJobName,
-      MediaSampleRateHertz: 8000, 
       OutputBucketName: process.env.S3_TRANSCRIPTION_BUCKET,
     }).promise();
   });
