@@ -23,17 +23,26 @@ provider:
 
 functions:
   transcribe:
-    handler: handler.transcribe
+    handler: handlers/transcribe.transcribe
     events:
       - s3:
           bucket: ${self:provider.environment.S3_AUDIO_BUCKET}
           event: s3:ObjectCreated:*
           rules:
             - suffix: .mp3
+  log:
+    handler: handlers/log.log
+    events:
+      - s3:
+          bucket: ${self:provider.environment.S3_TRANSCRIPTION_BUCKET}
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .json
 
-resources:
-  Resources:
-    S3TranscriptionBucket:
-      Type: 'AWS::S3::Bucket'
-      Properties:
-        BucketName: ${self:provider.environment.S3_TRANSCRIPTION_BUCKET}
+
+# resources:
+#   Resources:
+#     S3TranscriptionBucket:
+#       Type: 'AWS::S3::Bucket'
+#       Properties:
+#         BucketName: ${self:provider.environment.S3_TRANSCRIPTION_BUCKET}
