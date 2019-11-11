@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "description": "Transcribe audio clips and log them using serverless functions on AWS",
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^3.3.3"
+  }
 }

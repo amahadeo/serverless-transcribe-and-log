@@ -14,7 +14,7 @@ module.exports.transcribe = (event, context, callback) => {
       record.s3.object.key,
     ].join('/');
 
-    const TranscriptionJobName = record.s3.object.key;
+    const TranscriptionJobName = record.s3.object.key + (new Date().getTime().toString());
 
     return transcribeService.startTranscriptionJob({
       LanguageCode: process.env.LANGUAGE_CODE,
