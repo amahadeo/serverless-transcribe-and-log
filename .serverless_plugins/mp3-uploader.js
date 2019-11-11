@@ -32,20 +32,10 @@ class Mp3Uploader {
 
   uploadFile() {
     const pathToFile = path.join('mp3', this.options['filename']);
-    return new Promise(function (resolve, reject) {
-      try {
-        stats = fs.statSync(pathToFile);
-        this.serverless.cli.log("File exists.");
-        return this.provider.request('S3', 'upload', {
-          Bucket: this.serverless.service.custom.mp3_uploader.bucket_name,
-          Key: this.options['filename'],
-          Body: fs.readFileSync(pathToFile)
-        })
-      }
-      catch (e) {
-        this.serverless.cli.log("File does not exist.");
-        reject(e)
-      }
+    return this.provider.request('S3', 'upload', {
+      Bucket: this.serverless.service.custom.mp3_uploader.bucket_name,
+      Key: this.options['filename'],
+      Body: fs.readFileSync(pathToFile)
     })
   }
 
