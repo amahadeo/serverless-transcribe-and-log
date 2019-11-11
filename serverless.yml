@@ -2,9 +2,9 @@ service: serverless-transcribe-and-log
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs10.15
   environment:
-    S3_AUDIO_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-records
+    S3_AUDIO_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-audio-records
     S3_TRANSCRIPTION_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-transcriptions
     LANGUAGE_CODE: en-US
   iamRoleStatements:
