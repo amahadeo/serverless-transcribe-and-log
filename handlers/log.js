@@ -23,7 +23,7 @@ module.exports.log = (event, context, callback) => {
             return
         } else {
             const transcription = JSON.parse(data.Body.toString()).results.transcripts[0].transcript
-            console.log("Raw transcription:\n", transcription);
+            console.log("Raw transcription: ", transcription);
 
             const params = {
                 TableName: process.env.DYNAMODB_TABLE,
