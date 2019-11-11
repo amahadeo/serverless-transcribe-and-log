@@ -16,6 +16,7 @@ This is a serverless app that uploads a mp3 file to a AWS S3 bucket. From there,
 In order to deploy the example, simply run:
 
 ```bash
+npm install
 serverless deploy
 ```
 
