@@ -1,0 +1,7 @@
+{
+  "name": "serverless-transcribe-and-log",
+  "version": "1.0.0",
+  "description": "Transcribe audio clips and log them using serverless functions on AWS",
+  "author": "",
+  "license": "MIT"
+}
